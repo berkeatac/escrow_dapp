@@ -1,0 +1,45 @@
+# Created by https://www.gitignore.io/api/react,soliditytruffle
+# Edit at https://www.gitignore.io/?templates=react,soliditytruffle
+
+### react ###
+.DS_*
+*.log
+logs
+**/*.backup.*
+**/*.back.*
+
+node_modules
+bower_components
+
+*.sublime*
+
+psd
+thumb
+sketch
+
+### SolidityTruffle ###
+# depedencies
+
+# testing
+coverage
+
+# production
+build
+build_webpack
+
+# misc
+.DS_Store
+.env
+npm-debug.log
+.truffle-solidity-loader
+.vagrant/**
+blockchain/geth/**
+blockchain/keystore/**
+blockchain/history
+
+#truffle
+.tern-port
+yarn.lock
+package-lock.json
+
+# End of https://www.gitignore.io/api/react,soliditytruffle
