@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import SimpleStorageContract from "./contracts/SimpleStorage.json";
 import getWeb3 from "./getWeb3";
+import styled from "styled-components";
 
 import PostAd from "./components/PostAd";
 import Ad from "./components/Ad";
@@ -8,6 +9,21 @@ import AdList from "./components/AdList";
 import NavBar from "./components/NavBar";
 
 import "./App.css";
+
+const Container = styled.div`
+  width: 55vw;
+
+  & > * {
+    margin-top: 15px;
+    margin-bottom: 15px;
+  }
+`;
+
+const AppDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
 
 class App extends Component {
   state = { storageValue: 0, web3: null, accounts: null, contract: null };
@@ -56,7 +72,7 @@ class App extends Component {
       return <div>Loading Web3, accounts, and contract...</div>;
     }
     return (
-      <div className="App">
+      <AppDiv className="App">
         <NavBar account={this.state.accounts[0]} />
         {/*
         <h1>Good to Go!</h1>
@@ -71,10 +87,11 @@ class App extends Component {
         </p>
         <div>The stored value is: {this.state.storageValue}</div>
         */}
-
-        <PostAd></PostAd>
-        <AdList></AdList>
-      </div>
+        <Container>
+          <PostAd></PostAd>
+          <AdList></AdList>
+        </Container>
+      </AppDiv>
     );
   }
 }
