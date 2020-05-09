@@ -5,6 +5,7 @@ import getWeb3 from "./getWeb3";
 import PostAd from "./components/PostAd";
 import Ad from "./components/Ad";
 import AdList from "./components/AdList";
+import NavBar from "./components/NavBar";
 
 import "./App.css";
 
@@ -39,17 +40,15 @@ class App extends Component {
     }
   };
 
+  // UNCOMMENT THIS PART TO SEND A SET FUNCTION TO CONTRACT AT EACH PAGE RELOAD
   runExample = async () => {
-    const { accounts, contract } = this.state;
-
-    // Stores a given value, 5 by default.
-    await contract.methods.set(5).send({ from: accounts[0] });
-
-    // Get the value from the contract to prove it worked.
-    const response = await contract.methods.get().call();
-
-    // Update state with the result.
-    this.setState({ storageValue: response });
+    // const { accounts, contract } = this.state;
+    // // Stores a given value, 5 by default.
+    // await contract.methods.set(5).send({ from: accounts[0] });
+    // // Get the value from the contract to prove it worked.
+    // const response = await contract.methods.get().call();
+    // // Update state with the result.
+    // this.setState({ storageValue: response });
   };
 
   render() {
@@ -58,6 +57,8 @@ class App extends Component {
     }
     return (
       <div className="App">
+        <NavBar account={this.state.accounts[0]} />
+        {/*
         <h1>Good to Go!</h1>
         <p>Your Truffle Box is installed and ready.</p>
         <h2>Smart Contract Example</h2>
@@ -69,6 +70,8 @@ class App extends Component {
           Try changing the value stored on <strong>line 40</strong> of App.js.
         </p>
         <div>The stored value is: {this.state.storageValue}</div>
+        */}
+
         <PostAd></PostAd>
         <AdList></AdList>
       </div>
