@@ -5,6 +5,7 @@
       "constant": false,
       "inputs": [
         {
+          "internalType": "uint256",
           "name": "x",
           "type": "uint256"
         }
@@ -13,8 +14,7 @@
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
-      "type": "function",
-      "signature": "0x60fe47b1"
+      "type": "function"
     },
     {
       "constant": true,
@@ -22,24 +22,25 @@
       "name": "get",
       "outputs": [
         {
+          "internalType": "uint256",
           "name": "",
           "type": "uint256"
         }
       ],
       "payable": false,
       "stateMutability": "view",
-      "type": "function",
-      "signature": "0x6d4ce63c"
+      "type": "function"
     }
   ],
-  "bytecode": "0x608060405234801561001057600080fd5b5060ec8061001f6000396000f3fe6080604052600436106049576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff16806360fe47b114604e5780636d4ce63c146085575b600080fd5b348015605957600080fd5b50608360048036036020811015606e57600080fd5b810190808035906020019092919050505060ad565b005b348015609057600080fd5b50609760b7565b6040518082815260200191505060405180910390f35b8060008190555050565b6000805490509056fea165627a7a72305820eed649126adad0510d4954fec7557a7c397cb0853f0acf8bf1419ca5ff724f610029",
-  "deployedBytecode": "0x6080604052600436106049576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff16806360fe47b114604e5780636d4ce63c146085575b600080fd5b348015605957600080fd5b50608360048036036020811015606e57600080fd5b810190808035906020019092919050505060ad565b005b348015609057600080fd5b50609760b7565b6040518082815260200191505060405180910390f35b8060008190555050565b6000805490509056fea165627a7a72305820eed649126adad0510d4954fec7557a7c397cb0853f0acf8bf1419ca5ff724f610029",
+  "metadata": "{\"compiler\":{\"version\":\"0.5.16+commit.9c3226ce\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"constant\":true,\"inputs\":[],\"name\":\"get\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"x\",\"type\":\"uint256\"}],\"name\":\"set\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/Users/berkeatac/Desktop/escrow_dapp/contracts/SimpleStorage.sol\":\"SimpleStorage\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/Users/berkeatac/Desktop/escrow_dapp/contracts/SimpleStorage.sol\":{\"keccak256\":\"0xc2159b9be968451f2fc7620e38577dd35ed99a13286085d788139b7ce1ce3fc1\",\"urls\":[\"bzz-raw://30392edeac20a70916dbb100fff759575930c2105465b289a88b684d32707947\",\"dweb:/ipfs/QmZAM17Wb2sN4Ew7DF9ZbxEBmFpUoEubH3RKJGaTHWheJK\"]}},\"version\":1}",
+  "bytecode": "0x608060405234801561001057600080fd5b5060c68061001f6000396000f3fe6080604052348015600f57600080fd5b506004361060325760003560e01c806360fe47b11460375780636d4ce63c146062575b600080fd5b606060048036036020811015604b57600080fd5b8101908080359060200190929190505050607e565b005b60686088565b6040518082815260200191505060405180910390f35b8060008190555050565b6000805490509056fea265627a7a72315820ad798b65b55b3f9055a0acf66b1582eb0de629ec67b6b02f0721174418a0959264736f6c63430005100032",
+  "deployedBytecode": "0x6080604052348015600f57600080fd5b506004361060325760003560e01c806360fe47b11460375780636d4ce63c146062575b600080fd5b606060048036036020811015604b57600080fd5b8101908080359060200190929190505050607e565b005b60686088565b6040518082815260200191505060405180910390f35b8060008190555050565b6000805490509056fea265627a7a72315820ad798b65b55b3f9055a0acf66b1582eb0de629ec67b6b02f0721174418a0959264736f6c63430005100032",
   "sourceMap": "34:176:1:-;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;34:176:1;;;;;;;",
-  "deployedSourceMap": "34:176:1:-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;81:53;;8:9:-1;5:2;;;30:1;27;20:12;5:2;81:53:1;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;81:53:1;;;;;;;;;;;;;;;;;;;;138:70;;8:9:-1;5:2;;;30:1;27;20:12;5:2;138:70:1;;;;;;;;;;;;;;;;;;;;;;;81:53;128:1;115:10;:14;;;;81:53;:::o;138:70::-;174:4;193:10;;186:17;;138:70;:::o",
+  "deployedSourceMap": "34:176:1:-;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;34:176:1;;;;;;;;;;;;;;;;;;;;;;;;81:53;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;81:53:1;;;;;;;;;;;;;;;;;:::i;:::-;;138:70;;;:::i;:::-;;;;;;;;;;;;;;;;;;;81:53;128:1;115:10;:14;;;;81:53;:::o;138:70::-;174:4;193:10;;186:17;;138:70;:::o",
   "source": "pragma solidity >=0.4.21 <0.7.0;\n\ncontract SimpleStorage {\n  uint storedData;\n\n  function set(uint x) public {\n    storedData = x;\n  }\n\n  function get() public view returns (uint) {\n    return storedData;\n  }\n}\n",
-  "sourcePath": "/Users/oguzozsaygin/Github/truffle-test/contracts/SimpleStorage.sol",
+  "sourcePath": "/Users/berkeatac/Desktop/escrow_dapp/contracts/SimpleStorage.sol",
   "ast": {
-    "absolutePath": "/Users/oguzozsaygin/Github/truffle-test/contracts/SimpleStorage.sol",
+    "absolutePath": "/Users/berkeatac/Desktop/escrow_dapp/contracts/SimpleStorage.sol",
     "exportedSymbols": {
       "SimpleStorage": [
         59
@@ -294,7 +295,7 @@
     "src": "0:211:1"
   },
   "legacyAST": {
-    "absolutePath": "/Users/oguzozsaygin/Github/truffle-test/contracts/SimpleStorage.sol",
+    "absolutePath": "/Users/berkeatac/Desktop/escrow_dapp/contracts/SimpleStorage.sol",
     "exportedSymbols": {
       "SimpleStorage": [
         59
@@ -550,18 +551,19 @@
   },
   "compiler": {
     "name": "solc",
-    "version": "0.5.0+commit.1d4f565a.Emscripten.clang"
+    "version": "0.5.16+commit.9c3226ce.Emscripten.clang"
   },
   "networks": {
     "5777": {
       "events": {},
       "links": {},
-      "address": "0xbe7D0626859cadE19C79774a48b2548B4765145c",
-      "transactionHash": "0x4ee301a0f4ef83f35c3caabe34ec079ce47c629cbc03eb5c6b8867a254340a8d"
+      "address": "0xF44CcBb35897b9556a96D395eA5D8cB91B20696C",
+      "transactionHash": "0x86117c5a277a2719adffac38430f78301620b729ba720623fdcd49db389f393d"
     }
   },
-  "schemaVersion": "3.0.2",
-  "updatedAt": "2020-05-05T18:34:16.292Z",
+  "schemaVersion": "3.1.0",
+  "updatedAt": "2020-05-09T16:42:30.375Z",
+  "networkType": "ethereum",
   "devdoc": {
     "methods": {}
   },
