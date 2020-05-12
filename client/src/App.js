@@ -26,7 +26,7 @@ const AppDiv = styled.div`
 `;
 
 class App extends Component {
-  state = { storageValue: 0, web3: null, accounts: null, contract: null };
+  state = { storageValue: 0, web3: null, accounts: null, contract: null, items:[] };
 
   componentDidMount = async () => {
     try {
@@ -70,15 +70,15 @@ class App extends Component {
   createItem = async (title, price) => {
     const { accounts, contract } = this.state;
     const response = await contract.methods.createItem(title, price).send({ from: accounts[0]});
-    console.log(response)
+    if (response) {
+      this.getItems();
+    }
   }
 
   getItems = async () => {
     const { accounts, contract } = this.state;
-    this.createItem("berke1", 100);
     const resp = await contract.methods.getItems().call();
-    console.log(resp);
-    
+    this.setState({...this.state, items: resp});
   }
 
   render() {
@@ -89,8 +89,8 @@ class App extends Component {
       <AppDiv className="App">
         <NavBar account={this.state.accounts[0]} />\
         <Container>
-          <PostAd></PostAd>
-          <AdList></AdList>
+          <PostAd createItem={this.createItem}></PostAd>
+          <AdList items={this.state.items}></AdList>
         </Container>
       </AppDiv>
     );

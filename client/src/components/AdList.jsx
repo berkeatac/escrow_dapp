@@ -11,13 +11,10 @@ const StyledDiv = styled.div`
   }
 `;
 
-const AdList = () => {
+const AdList = ({items}) => {
   return (
     <StyledDiv>
-      <Ad></Ad>
-      <Ad></Ad>
-      <Ad></Ad>
-      <Ad></Ad>
+      {items.reverse().map( item => <Ad item={item}></Ad>)}
     </StyledDiv>
   );
 };

@@ -10,15 +10,18 @@ const StyledCard = styled(Card)`
   width: 40vw;
 `;
 
-const Ad = () => {
+const Ad = ({item}) => {
   return (
     <StyledCard>
       <CardContent>
         <Typography variant="h5" component="h2">
-          Ad Title
+          {item.name}
         </Typography>
         <Typography variant="body2" component="p">
           Ad Description
+        </Typography>
+        <Typography variant="body2" component="p">
+          {item.price}
         </Typography>
       </CardContent>
       <CardActions>
