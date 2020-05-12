@@ -78,11 +78,11 @@ contract Marketplace {
         // fetch the item
         Item memory _item = items[_id];
         require(
-            msg.value >= _item.price,
+            msg.value > _item.price,
             "there must be enough ether on message sent"
         );
         require(
-            _item.id >= 0 && _item.id <= itemCount,
+            _item.id > 0 && _item.id <= itemCount,
             "item must have a valid id"
         );
         require(!_item.purchased, "item does not have to be purchased before");
@@ -104,16 +104,25 @@ contract Marketplace {
         _item.purchased = true;
         _item.verified = true;
         address payable _seller = _item.owner;
-        _item.owner = msg.sender;
-        _item.buyer = address(0);
         items[_id] = _item;
         _seller.transfer(_item.price);
+    }
+
+    function cancelPurchase(uint _id) public payable {
+        Item memory _item = items[_id];
+        require(msg.sender == _item.buyer); 
+        require(_item.purchased && !_item.verified);
+        _item.purchased = false;
+        address payable target = _item.buyer;
+        target.transfer(_item.price);
+        _item.buyer = address(0);
+        items[_id] = _item;
     }
 
     function deleteItem(uint _id) public {
         Item memory _item = items[_id];
         require(msg.sender == _item.owner);
-        require(!_item.purchased);
+        require(!_item.purchased)
         delete items[_id];
     }
 }
