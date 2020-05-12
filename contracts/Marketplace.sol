@@ -4,14 +4,14 @@ pragma experimental ABIEncoderV2;
 
 contract Marketplace {
     string public name;
-    uint itemCount = 0;
-    mapping(uint => Item) public items;
+    uint256 itemCount = 0;
+    mapping(uint256 => Item) public items;
 
     struct Item {
-        uint id;
+        uint256 id;
         string name;
         string description;
-        uint price;
+        uint256 price;
         address payable owner;
         address payable buyer;
         bool purchased;
@@ -21,10 +21,10 @@ contract Marketplace {
      ** Events
      **/
     event ItemCreated(
-        uint id,
+        uint256 id,
         string name,
         string description,
-        uint price,
+        uint256 price,
         address payable owner,
         address payable buyer,
         bool purchased,
@@ -37,7 +37,7 @@ contract Marketplace {
 
     function getItems() public returns (Item[] memory) {
         Item[] memory ret = new Item[](itemCount);
-        for (uint i = 0; i < itemCount; i++) {
+        for (uint256 i = 0; i < itemCount; i++) {
             ret[i] = items[i];
         }
         return ret;
@@ -74,15 +74,15 @@ contract Marketplace {
         );
     }
 
-    function purchaseItem(uint _id) public payable {
+    function purchaseItem(uint256 _id) public payable {
         // fetch the item
         Item memory _item = items[_id];
         require(
-            msg.value > _item.price,
+            msg.value >= _item.price,
             "there must be enough ether on message sent"
         );
         require(
-            _item.id > 0 && _item.id <= itemCount,
+            _item.id >= 0 && _item.id <= itemCount,
             "item must have a valid id"
         );
         require(!_item.purchased, "item does not have to be purchased before");
@@ -93,14 +93,14 @@ contract Marketplace {
         items[_id] = _item;
     }
 
-    function verifyPurchase(uint _id) public payable {
+    function verifyPurchase(uint256 _id) public payable {
         Item memory _item = items[_id];
         require(msg.sender == _item.buyer, "msg.sender must be item buyer");
         require(
             _item.purchased && !_item.verified,
             "item must be purchased but not verified"
         );
-        require(_item.price > 0, "item price must be unsigned integer");
+        require(_item.price >= 0, "item price must be unsigned integer");
         _item.purchased = true;
         _item.verified = true;
         address payable _seller = _item.owner;
@@ -108,10 +108,13 @@ contract Marketplace {
         _seller.transfer(_item.price);
     }
 
-    function cancelPurchase(uint _id) public payable {
+    function cancelPurchase(uint256 _id) public payable {
         Item memory _item = items[_id];
-        require(msg.sender == _item.buyer); 
-        require(_item.purchased && !_item.verified);
+        require(msg.sender == _item.buyer, "msg.sender must be buyer");
+        require(
+            _item.purchased && !_item.verified,
+            "purchase must be in verification phase"
+        );
         _item.purchased = false;
         address payable target = _item.buyer;
         target.transfer(_item.price);
@@ -119,10 +122,10 @@ contract Marketplace {
         items[_id] = _item;
     }
 
-    function deleteItem(uint _id) public {
+    function deleteItem(uint256 _id) public {
         Item memory _item = items[_id];
         require(msg.sender == _item.owner);
-        require(!_item.purchased)
+        require(!_item.purchased);
         delete items[_id];
     }
 }
