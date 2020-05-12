@@ -35,6 +35,7 @@ class App extends Component {
   };
 
   componentDidMount = async () => {
+    const _this = this;
     try {
       // Get network provider and web3 instance.
       const web3 = await getWeb3();
@@ -53,6 +54,17 @@ class App extends Component {
       // Set web3, accounts, and contract to the state, and then proceed with an
       // example of interacting with the contract's methods.
       this.setState({ web3, accounts, contract: instance }, this.getItems);
+
+      if (window.ethereum) {
+        window.ethereum.on("accountsChanged", function () {
+          web3.eth.getAccounts(function (error, newAccounts) {
+            _this.setState(
+              { ..._this.state, accounts: newAccounts },
+              _this.getItems
+            );
+          });
+        });
+      }
     } catch (error) {
       // Catch any errors for any of the above operations.
       alert(
