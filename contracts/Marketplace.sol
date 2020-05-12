@@ -113,7 +113,7 @@ contract Marketplace {
     function deleteItem(uint _id) public {
         Item memory _item = items[_id];
         require(msg.sender == _item.owner);
-        require(!_item.purchased)
+        require(!_item.purchased);
         delete items[_id];
     }
 }

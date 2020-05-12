@@ -34,7 +34,7 @@ const PostAd = ({createItem}) => {
       <StyledTextField id="title" label="Title" onChange={ e => setTitle(e.target.value)} value={title} />
       <StyledTextField id="description" label="Description" onChange={ e => setDesc(e.target.value)} value={desc}/>
       <StyledTextField type="number" id="price" label="Price" onChange={ e => setPrice(e.target.value)} value={price}/>
-      <StyledButton variant="contained" color="primary" onClick={() => createItem(title, parseInt(price))}>
+      <StyledButton variant="contained" color="primary" onClick={() => createItem(title, desc, parseInt(price))}>
         Post Ad
       </StyledButton>
     </Container>

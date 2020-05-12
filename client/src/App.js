@@ -67,9 +67,9 @@ class App extends Component {
     // this.setState({ storageValue: response });
   };
 
-  createItem = async (title, price) => {
+  createItem = async (title, description, price) => {
     const { accounts, contract } = this.state;
-    const response = await contract.methods.createItem(title, price).send({ from: accounts[0]});
+    const response = await contract.methods.createItem(title, description, price).send({ from: accounts[0]});
     if (response) {
       this.getItems();
     }
@@ -87,7 +87,7 @@ class App extends Component {
     }
     return (
       <AppDiv className="App">
-        <NavBar account={this.state.accounts[0]} />\
+        <NavBar account={this.state.accounts[0]} />
         <Container>
           <PostAd createItem={this.createItem}></PostAd>
           <AdList items={this.state.items}></AdList>

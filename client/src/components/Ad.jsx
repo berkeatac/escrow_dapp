@@ -18,7 +18,7 @@ const Ad = ({item}) => {
           {item.name}
         </Typography>
         <Typography variant="body2" component="p">
-          Ad Description
+          {item.description}
         </Typography>
         <Typography variant="body2" component="p">
           {item.price}
