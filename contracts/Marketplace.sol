@@ -1,4 +1,5 @@
 pragma solidity ^0.5.16;
+pragma experimental ABIEncoderV2;
 
 
 contract Marketplace {
@@ -20,6 +21,14 @@ contract Marketplace {
 
     constructor() public {
         name = "Marketplace";
+    }
+
+    function getItems() public returns (Item[] memory) {
+        Item[] memory ret = new Item[](itemCount);
+        for (uint256 i = 0; i < itemCount; i++) {
+            ret[i] = items[i];
+        }
+        return ret;
     }
 
     function createItem(string memory _name, uint256 _price) public {
