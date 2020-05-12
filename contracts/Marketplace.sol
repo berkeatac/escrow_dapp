@@ -1,23 +1,35 @@
-pragma solidity ^0.5.16;
+pragma solidity ^0.5.0;
 pragma experimental ABIEncoderV2;
 
 
 contract Marketplace {
     string public name;
-    uint256 itemCount = 0;
-    mapping(uint256 => Item) public items;
+    uint itemCount = 0;
+    mapping(uint => Item) public items;
 
     struct Item {
-        uint256 id;
+        uint id;
         string name;
-        uint256 price;
+        string description;
+        uint price;
         address payable owner;
         address payable buyer;
         bool purchased;
         bool verified;
     }
-
-    // Events
+    /**
+     ** Events
+     **/
+    event ItemCreated(
+        uint id,
+        string name,
+        string description,
+        uint price,
+        address payable owner,
+        address payable buyer,
+        bool purchased,
+        bool verified
+    );
 
     constructor() public {
         name = "Marketplace";
@@ -25,19 +37,24 @@ contract Marketplace {
 
     function getItems() public returns (Item[] memory) {
         Item[] memory ret = new Item[](itemCount);
-        for (uint256 i = 0; i < itemCount; i++) {
+        for (uint i = 0; i < itemCount; i++) {
             ret[i] = items[i];
         }
         return ret;
     }
 
-    function createItem(string memory _name, uint256 _price) public {
+    function createItem(
+        string memory _name,
+        string memory _description,
+        uint256 _price
+    ) public {
         require(bytes(_name).length > 0, "");
         require(_price > 0, "");
 
         items[itemCount] = Item(
             itemCount,
             _name,
+            _description,
             _price,
             msg.sender,
             address(0),
@@ -45,9 +62,19 @@ contract Marketplace {
             false
         );
         itemCount++;
+        emit ItemCreated(
+            itemCount,
+            _name,
+            _description,
+            _price,
+            msg.sender,
+            address(0),
+            false,
+            false
+        );
     }
 
-    function purchaseProduct(uint256 _id) public payable {
+    function purchaseItem(uint _id) public payable {
         // fetch the item
         Item memory _item = items[_id];
         require(
@@ -66,7 +93,7 @@ contract Marketplace {
         items[_id] = _item;
     }
 
-    function verifyPurchase(uint256 _id) public payable {
+    function verifyPurchase(uint _id) public payable {
         Item memory _item = items[_id];
         require(msg.sender == _item.buyer, "msg.sender must be item buyer");
         require(
@@ -81,5 +108,12 @@ contract Marketplace {
         _item.buyer = address(0);
         items[_id] = _item;
         _seller.transfer(_item.price);
+    }
+
+    function deleteItem(uint _id) public {
+        Item memory _item = items[_id];
+        require(msg.sender == _item.owner);
+        require(!_item.purchased)
+        delete items[_id];
     }
 }
