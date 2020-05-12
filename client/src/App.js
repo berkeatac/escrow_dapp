@@ -82,9 +82,8 @@ class App extends Component {
     const { accounts, contract } = this.state;
     const resp = await contract.methods.purchaseItem(item.id).send({
       from: accounts[0],
-      value: this.state.web3.utils.toWei(item.price.toString(), "wei"),
+      value: this.state.web3.utils.toWei(item.price.toString(), "Ether"),
     });
-    console.log("purchase", resp);
   };
 
   verifyPurchase = async (item) => {
@@ -92,7 +91,6 @@ class App extends Component {
     const resp = await contract.methods.verifyPurchase(item.id).send({
       from: accounts[0],
     });
-    console.log("purchase", resp);
   };
 
   render() {
@@ -107,6 +105,7 @@ class App extends Component {
           <AdList
             items={this.state.items}
             purchaseItem={this.purchaseItem}
+            verifyPurchase={this.verifyPurchase}
             account={this.state.accounts[0]}
           ></AdList>
         </Container>

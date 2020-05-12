@@ -10,7 +10,7 @@ const StyledCard = styled(Card)`
   width: 40vw;
 `;
 
-const Ad = ({ item, purchaseItem, account }) => {
+const Ad = ({ item, purchaseItem, account, verifyPurchase }) => {
   return (
     <StyledCard>
       <CardContent>
@@ -26,6 +26,11 @@ const Ad = ({ item, purchaseItem, account }) => {
         <Typography variant="body2" component="p">
           {item.price}
         </Typography>
+        {item.verified && item.buyer === account ? (
+          <Typography variant="body2" component="p">
+            You bought and verified the purchase of this item
+          </Typography>
+        ) : null}
       </CardContent>
       <CardActions>
         {item.purchased || item.owner === account ? null : (
@@ -37,10 +42,7 @@ const Ad = ({ item, purchaseItem, account }) => {
       <CardActions>
         {console.log(item.id, item.purchased, item.buyer, account)}
         {item.purchased && item.buyer === account ? (
-          <Button
-            size="small"
-            onClick={() => console.log("sending verification")}
-          >
+          <Button size="small" onClick={() => verifyPurchase(item)}>
             Verify Escrow
           </Button>
         ) : null}
