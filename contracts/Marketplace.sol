@@ -35,7 +35,6 @@ contract Marketplace {
         require(bytes(_name).length > 0, "");
         require(_price > 0, "");
 
-        itemCount++;
         items[itemCount] = Item(
             itemCount,
             _name,
@@ -45,6 +44,7 @@ contract Marketplace {
             false,
             false
         );
+        itemCount++;
     }
 
     function purchaseProduct(uint256 _id) public payable {

@@ -67,10 +67,18 @@ class App extends Component {
     // this.setState({ storageValue: response });
   };
 
+  createItem = async (title, price) => {
+    const { accounts, contract } = this.state;
+    const response = await contract.methods.createItem(title, price).send({ from: accounts[0]});
+    console.log(response)
+  }
+
   getItems = async () => {
     const { accounts, contract } = this.state;
-    const response = await contract.methods.items.call();
-    console.log(response);
+    this.createItem("berke1", 100);
+    const resp = await contract.methods.getItems().call();
+    console.log(resp);
+    
   }
 
   render() {
