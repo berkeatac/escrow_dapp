@@ -30,7 +30,7 @@ const Ad = ({
           {`Seller: ${item.owner}`}
         </Typography>
         <Typography variant="body2" component="p">
-          {item.price}
+          {`${item.price / 10 ** 18} ETH`}
         </Typography>
         {item.verified && item.buyer === account ? (
           <Typography variant="body2" component="p">

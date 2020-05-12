@@ -64,10 +64,14 @@ class App extends Component {
 
   createItem = async (title, description, price) => {
     const { accounts, contract } = this.state;
-    const response = await contract.methods
-      .createItem(title, description, price)
+    const resp = await contract.methods
+      .createItem(
+        title,
+        description,
+        this.state.web3.utils.toWei(price.toString(), "Ether")
+      )
       .send({ from: accounts[0] });
-    if (response) {
+    if (resp) {
       this.getItems();
     }
   };
@@ -82,8 +86,11 @@ class App extends Component {
     const { accounts, contract } = this.state;
     const resp = await contract.methods.purchaseItem(item.id).send({
       from: accounts[0],
-      value: this.state.web3.utils.toWei(item.price.toString(), "Ether"),
+      value: this.state.web3.utils.toWei(item.price.toString(), "wei"),
     });
+    if (resp) {
+      this.getItems();
+    }
   };
 
   verifyPurchase = async (item) => {
@@ -91,6 +98,9 @@ class App extends Component {
     const resp = await contract.methods.verifyPurchase(item.id).send({
       from: accounts[0],
     });
+    if (resp) {
+      this.getItems();
+    }
   };
 
   cancelPurchase = async (item) => {
@@ -98,6 +108,9 @@ class App extends Component {
     const resp = await contract.methods.cancelPurchase(item.id).send({
       from: accounts[0],
     });
+    if (resp) {
+      this.getItems();
+    }
   };
 
   render() {
