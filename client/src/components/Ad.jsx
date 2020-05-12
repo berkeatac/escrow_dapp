@@ -10,7 +10,7 @@ const StyledCard = styled(Card)`
   width: 40vw;
 `;
 
-const Ad = ({item}) => {
+const Ad = ({ item, purchaseItem, account }) => {
   return (
     <StyledCard>
       <CardContent>
@@ -21,11 +21,29 @@ const Ad = ({item}) => {
           {item.description}
         </Typography>
         <Typography variant="body2" component="p">
+          {`Seller: ${item.owner}`}
+        </Typography>
+        <Typography variant="body2" component="p">
           {item.price}
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small">Send Escrow</Button>
+        {item.purchased || item.owner === account ? null : (
+          <Button size="small" onClick={() => purchaseItem(item)}>
+            Send Escrow
+          </Button>
+        )}
+      </CardActions>
+      <CardActions>
+        {console.log(item.id, item.purchased, item.buyer, account)}
+        {item.purchased && item.buyer === account ? (
+          <Button
+            size="small"
+            onClick={() => console.log("sending verification")}
+          >
+            Verify Escrow
+          </Button>
+        ) : null}
       </CardActions>
     </StyledCard>
   );

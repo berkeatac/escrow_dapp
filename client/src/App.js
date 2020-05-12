@@ -26,7 +26,13 @@ const AppDiv = styled.div`
 `;
 
 class App extends Component {
-  state = { storageValue: 0, web3: null, accounts: null, contract: null, items:[] };
+  state = {
+    storageValue: 0,
+    web3: null,
+    accounts: null,
+    contract: null,
+    items: [],
+  };
 
   componentDidMount = async () => {
     try {
@@ -56,30 +62,38 @@ class App extends Component {
     }
   };
 
-  // UNCOMMENT THIS PART TO SEND A SET FUNCTION TO CONTRACT AT EACH PAGE RELOAD
-  runExample = async () => {
-    // const { accounts, contract } = this.state;
-    // // Stores a given value, 5 by default.
-    // await contract.methods.set(5).send({ from: accounts[0] });
-    // // Get the value from the contract to prove it worked.
-    // const response = await contract.methods.get().call();
-    // // Update state with the result.
-    // this.setState({ storageValue: response });
-  };
-
   createItem = async (title, description, price) => {
     const { accounts, contract } = this.state;
-    const response = await contract.methods.createItem(title, description, price).send({ from: accounts[0]});
+    const response = await contract.methods
+      .createItem(title, description, price)
+      .send({ from: accounts[0] });
     if (response) {
       this.getItems();
     }
-  }
+  };
 
   getItems = async () => {
     const { accounts, contract } = this.state;
     const resp = await contract.methods.getItems().call();
-    this.setState({...this.state, items: resp});
-  }
+    this.setState({ ...this.state, items: resp });
+  };
+
+  purchaseItem = async (item) => {
+    const { accounts, contract } = this.state;
+    const resp = await contract.methods.purchaseItem(item.id).send({
+      from: accounts[0],
+      value: this.state.web3.utils.toWei(item.price.toString(), "wei"),
+    });
+    console.log("purchase", resp);
+  };
+
+  verifyPurchase = async (item) => {
+    const { accounts, contract } = this.state;
+    const resp = await contract.methods.verifyPurchase(item.id).send({
+      from: accounts[0],
+    });
+    console.log("purchase", resp);
+  };
 
   render() {
     if (!this.state.web3) {
@@ -90,7 +104,11 @@ class App extends Component {
         <NavBar account={this.state.accounts[0]} />
         <Container>
           <PostAd createItem={this.createItem}></PostAd>
-          <AdList items={this.state.items}></AdList>
+          <AdList
+            items={this.state.items}
+            purchaseItem={this.purchaseItem}
+            account={this.state.accounts[0]}
+          ></AdList>
         </Container>
       </AppDiv>
     );

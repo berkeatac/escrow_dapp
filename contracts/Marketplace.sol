@@ -78,11 +78,11 @@ contract Marketplace {
         // fetch the item
         Item memory _item = items[_id];
         require(
-            msg.value > _item.price,
+            msg.value >= _item.price,
             "there must be enough ether on message sent"
         );
         require(
-            _item.id > 0 && _item.id <= itemCount,
+            _item.id >= 0 && _item.id <= itemCount,
             "item must have a valid id"
         );
         require(!_item.purchased, "item does not have to be purchased before");

@@ -11,10 +11,17 @@ const StyledDiv = styled.div`
   }
 `;
 
-const AdList = ({items}) => {
+const AdList = ({ items, purchaseItem, account }) => {
   return (
     <StyledDiv>
-      {items.reverse().map( item => <Ad item={item}></Ad>)}
+      {items.reverse().map((item) => (
+        <Ad
+          item={item}
+          key={item.id}
+          purchaseItem={purchaseItem}
+          account={account}
+        ></Ad>
+      ))}
     </StyledDiv>
   );
 };
