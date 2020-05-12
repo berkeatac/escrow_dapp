@@ -16,6 +16,8 @@ contract Marketplace {
         bool verified;
     }
 
+    // Events
+
     constructor() public {
         name = "Marketplace";
     }
@@ -43,10 +45,14 @@ contract Marketplace {
             msg.value > _item.price,
             "there must be enough ether on message sent"
         );
-        require(_item.id > 0 && _item.id <= itemCount, "item must have a valid id");
+        require(
+            _item.id > 0 && _item.id <= itemCount,
+            "item must have a valid id"
+        );
         require(!_item.purchased, "item does not have to be purchased before");
         require(_item.owner != msg.sender, "seller cannot buy its own item");
         _item.purchased = true;
+        _item.price = msg.value;
         _item.buyer = msg.sender;
         items[_id] = _item;
     }
