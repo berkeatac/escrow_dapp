@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
@@ -10,7 +10,13 @@ const StyledCard = styled(Card)`
   width: 40vw;
 `;
 
-const Ad = ({ item, purchaseItem, account, verifyPurchase }) => {
+const Ad = ({
+  item,
+  purchaseItem,
+  account,
+  verifyPurchase,
+  cancelPurchase,
+}) => {
   return (
     <StyledCard>
       <CardContent>
@@ -42,9 +48,14 @@ const Ad = ({ item, purchaseItem, account, verifyPurchase }) => {
       <CardActions>
         {console.log(item.id, item.purchased, item.buyer, account)}
         {item.purchased && item.buyer === account ? (
-          <Button size="small" onClick={() => verifyPurchase(item)}>
-            Verify Escrow
-          </Button>
+          <>
+            <Button size="small" onClick={() => verifyPurchase(item)}>
+              Verify Escrow
+            </Button>
+            <Button size="small" onClick={() => cancelPurchase(item)}>
+              Cancel Escrow
+            </Button>
+          </>
         ) : null}
       </CardActions>
     </StyledCard>

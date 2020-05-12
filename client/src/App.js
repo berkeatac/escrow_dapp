@@ -93,6 +93,13 @@ class App extends Component {
     });
   };
 
+  cancelPurchase = async (item) => {
+    const { accounts, contract } = this.state;
+    const resp = await contract.methods.cancelPurchase(item.id).send({
+      from: accounts[0],
+    });
+  };
+
   render() {
     if (!this.state.web3) {
       return <div>Loading Web3, accounts, and contract...</div>;
@@ -106,6 +113,7 @@ class App extends Component {
             items={this.state.items}
             purchaseItem={this.purchaseItem}
             verifyPurchase={this.verifyPurchase}
+            cancelPurchase={this.cancelPurchase}
             account={this.state.accounts[0]}
           ></AdList>
         </Container>

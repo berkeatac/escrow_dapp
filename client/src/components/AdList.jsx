@@ -11,7 +11,13 @@ const StyledDiv = styled.div`
   }
 `;
 
-const AdList = ({ items, purchaseItem, verifyPurchase, account }) => {
+const AdList = ({
+  items,
+  purchaseItem,
+  verifyPurchase,
+  cancelPurchase,
+  account,
+}) => {
   return (
     <StyledDiv>
       {items.reverse().map((item) => (
@@ -20,6 +26,7 @@ const AdList = ({ items, purchaseItem, verifyPurchase, account }) => {
           key={item.id}
           purchaseItem={purchaseItem}
           verifyPurchase={verifyPurchase}
+          cancelPurchase={cancelPurchase}
           account={account}
         ></Ad>
       ))}

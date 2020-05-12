@@ -115,6 +115,8 @@ contract Marketplace {
             _item.purchased && !_item.verified,
             "purchase must be in verification phase"
         );
+        require(msg.sender == _item.buyer);
+        require(_item.purchased && !_item.verified);
         _item.purchased = false;
         address payable target = _item.buyer;
         target.transfer(_item.price);
