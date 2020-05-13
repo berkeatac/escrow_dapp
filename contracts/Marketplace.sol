@@ -191,6 +191,7 @@ contract Marketplace {
         target.transfer(_item.price);
         target.transfer(_item.fee);
         _item.buyer = address(0);
+        _item.transit = false;
         items[_id] = _item;
     }
 
