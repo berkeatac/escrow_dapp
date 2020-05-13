@@ -53,3 +53,7 @@ contract('Marketplace', ([deployer, seller, buyer]) => {
         })
     })
 })
+
+
+// courier cannot create item
+// address cannot be courier adrr

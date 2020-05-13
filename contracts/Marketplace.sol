@@ -169,7 +169,7 @@ contract Marketplace {
         _item.verified = true;
         _item.transit = false;
         items[_id] = _item;
-        _item.owner.transfer(_item.price);
+        _item.owner.transfer(_item.price - _item.fee);
         _item.courier.transfer(_item.fee);
     }
 
