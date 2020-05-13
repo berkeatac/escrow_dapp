@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import styled from "styled-components";
@@ -24,17 +24,37 @@ const Container = styled.form`
   }
 `;
 
-const PostAd = ({createItem}) => {
+const PostAd = ({ createItem }) => {
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
   const [price, setPrice] = useState("");
 
   return (
     <Container>
-      <StyledTextField id="title" label="Title" onChange={ e => setTitle(e.target.value)} value={title} />
-      <StyledTextField id="description" label="Description" onChange={ e => setDesc(e.target.value)} value={desc}/>
-      <StyledTextField type="number" id="price" label="Price" onChange={ e => setPrice(e.target.value)} value={price}/>
-      <StyledButton variant="contained" color="primary" onClick={() => createItem(title, desc, parseInt(price))}>
+      <StyledTextField
+        id="title"
+        label="Title"
+        onChange={(e) => setTitle(e.target.value)}
+        value={title}
+      />
+      <StyledTextField
+        id="description"
+        label="Description"
+        onChange={(e) => setDesc(e.target.value)}
+        value={desc}
+      />
+      <StyledTextField
+        type="number"
+        id="price"
+        label="Price"
+        onChange={(e) => setPrice(e.target.value)}
+        value={price}
+      />
+      <StyledButton
+        variant="contained"
+        color="primary"
+        onClick={() => createItem(title, desc, parseInt(price))}
+      >
         Post Ad
       </StyledButton>
     </Container>

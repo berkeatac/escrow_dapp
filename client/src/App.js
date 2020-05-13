@@ -32,6 +32,7 @@ class App extends Component {
     accounts: null,
     contract: null,
     items: [],
+    couriers: [],
   };
 
   componentDidMount = async () => {
@@ -53,7 +54,10 @@ class App extends Component {
 
       // Set web3, accounts, and contract to the state, and then proceed with an
       // example of interacting with the contract's methods.
-      this.setState({ web3, accounts, contract: instance }, this.getItems);
+      this.setState(
+        { web3, accounts, contract: instance },
+        this.getItems && this.getCouriers
+      );
 
       if (window.ethereum) {
         window.ethereum.on("accountsChanged", function () {
@@ -125,13 +129,34 @@ class App extends Component {
     }
   };
 
+  becomeCourier = async () => {
+    const { accounts, contract } = this.state;
+    const resp = await contract.methods.becomeCourier().send({
+      from: accounts[0],
+    });
+    if (resp) {
+      this.getItems();
+    }
+  };
+
+  getCouriers = async () => {
+    const { accounts, contract } = this.state;
+    const resp = await contract.methods.getCouriers().call();
+    this.setState({ ...this.state, couriers: resp });
+    console.log(resp);
+  };
+
   render() {
     if (!this.state.web3) {
       return <div>Loading Web3, accounts, and contract...</div>;
     }
     return (
       <AppDiv className="App">
-        <NavBar account={this.state.accounts[0]} />
+        <NavBar
+          account={this.state.accounts[0]}
+          becomeCourier={this.becomeCourier}
+          couriers={this.state.couriers}
+        />
         <Container>
           <PostAd createItem={this.createItem}></PostAd>
           <AdList

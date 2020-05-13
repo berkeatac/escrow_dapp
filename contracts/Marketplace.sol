@@ -5,7 +5,16 @@ pragma experimental ABIEncoderV2;
 contract Marketplace {
     string public name;
     uint256 itemCount = 0;
+    uint256 courierCount = 0;
+
     mapping(uint256 => Item) public items;
+    mapping(uint256 => Courier) public couriers;
+
+    struct Courier {
+        uint256 id;
+        address payable adr;
+        uint256 reputation;
+    }
 
     struct Item {
         uint256 id;
@@ -33,6 +42,20 @@ contract Marketplace {
 
     constructor() public {
         name = "Marketplace";
+    }
+
+    function becomeCourier() public {
+        // require() is not already a courier
+        couriers[courierCount] = Courier(courierCount, msg.sender, 0);
+        courierCount++;
+    }
+
+    function getCouriers() public returns (Courier[] memory) {
+        Courier[] memory ret = new Courier[](courierCount);
+        for (uint256 i = 0; i < courierCount; i++) {
+            ret[i] = couriers[i];
+        }
+        return ret;
     }
 
     function getItems() public returns (Item[] memory) {
