@@ -10,6 +10,9 @@ contract Marketplace {
     mapping(uint256 => Item) public items;
     mapping(uint256 => Courier) public couriers;
 
+    /*
+     * Models
+     */
     struct Courier {
         uint256 id;
         address payable adr;
@@ -21,14 +24,17 @@ contract Marketplace {
         string name;
         string description;
         uint256 price;
+        uint256 fee;
         address payable owner;
         address payable buyer;
+        address payable courier;
         bool purchased;
         bool verified;
+        bool transit;
     }
-    /**
-     ** Events
-     **/
+    /*
+     * Events
+     */
     event ItemCreated(
         uint256 id,
         string name,
@@ -39,6 +45,8 @@ contract Marketplace {
         bool purchased,
         bool verified
     );
+
+    event ItemPurchased();
 
     constructor() public {
         name = "Marketplace";
@@ -79,7 +87,9 @@ contract Marketplace {
             _name,
             _description,
             _price,
+            0,
             msg.sender,
+            address(0),
             address(0),
             false,
             false
@@ -90,7 +100,9 @@ contract Marketplace {
             _name,
             _description,
             _price,
+            0,
             msg.sender,
+            address(0),
             address(0),
             false,
             false
@@ -116,6 +128,14 @@ contract Marketplace {
         items[_id] = _item;
     }
 
+    function setPurchaseFee(uint256 _id, uint256 percentage) {
+        Item memory _item = items[_id];
+        _item.fee =  _item.price * percentage / 100
+        _item.courier = msg.sender;
+        _item.transit = true;
+        items[_id] = _item;
+    }
+
     function verifyPurchase(uint256 _id) public payable {
         Item memory _item = items[_id];
         require(msg.sender == _item.buyer, "msg.sender must be item buyer");
@@ -126,9 +146,10 @@ contract Marketplace {
         require(_item.price >= 0, "item price must be unsigned integer");
         _item.purchased = true;
         _item.verified = true;
-        address payable _seller = _item.owner;
+        _item.transit = false;
         items[_id] = _item;
-        _seller.transfer(_item.price);
+        _item.owner.transfer(_item.price);
+        _item.courier.transfer(_item.fee);
     }
 
     function cancelPurchase(uint256 _id) public payable {
