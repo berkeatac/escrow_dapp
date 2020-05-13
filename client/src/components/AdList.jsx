@@ -17,6 +17,8 @@ const AdList = ({
   verifyPurchase,
   cancelPurchase,
   account,
+  couriers,
+  setPurchaseFee,
 }) => {
   return (
     <StyledDiv>
@@ -28,6 +30,8 @@ const AdList = ({
           verifyPurchase={verifyPurchase}
           cancelPurchase={cancelPurchase}
           account={account}
+          couriers={couriers}
+          setPurchaseFee={setPurchaseFee}
         ></Ad>
       ))}
     </StyledDiv>

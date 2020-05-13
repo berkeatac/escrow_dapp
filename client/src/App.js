@@ -54,10 +54,7 @@ class App extends Component {
 
       // Set web3, accounts, and contract to the state, and then proceed with an
       // example of interacting with the contract's methods.
-      this.setState(
-        { web3, accounts, contract: instance },
-        this.getItems && this.getCouriers
-      );
+      this.setState({ web3, accounts, contract: instance }, this.getItems);
 
       if (window.ethereum) {
         window.ethereum.on("accountsChanged", function () {
@@ -96,6 +93,8 @@ class App extends Component {
     const { accounts, contract } = this.state;
     const resp = await contract.methods.getItems().call();
     this.setState({ ...this.state, items: resp });
+    this.getCouriers();
+    console.log(resp);
   };
 
   purchaseItem = async (item) => {
@@ -111,6 +110,7 @@ class App extends Component {
 
   verifyPurchase = async (item) => {
     const { accounts, contract } = this.state;
+    console.log(item.id);
     const resp = await contract.methods.verifyPurchase(item.id).send({
       from: accounts[0],
     });
@@ -146,6 +146,18 @@ class App extends Component {
     console.log(resp);
   };
 
+  setPurchaseFee = async (itemId, percentage) => {
+    const { accounts, contract } = this.state;
+    const resp = await contract.methods
+      .setPurchaseFee(itemId, percentage)
+      .send({
+        from: accounts[0],
+      });
+    if (resp) {
+      this.getItems();
+    }
+  };
+
   render() {
     if (!this.state.web3) {
       return <div>Loading Web3, accounts, and contract...</div>;
@@ -165,6 +177,8 @@ class App extends Component {
             verifyPurchase={this.verifyPurchase}
             cancelPurchase={this.cancelPurchase}
             account={this.state.accounts[0]}
+            couriers={this.state.couriers}
+            setPurchaseFee={this.setPurchaseFee}
           ></AdList>
         </Container>
       </AppDiv>

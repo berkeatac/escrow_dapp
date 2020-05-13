@@ -14,9 +14,7 @@ const NavBar = ({ account, becomeCourier, couriers }) => {
   };
 
   const isCourier = () => {
-    console.log(couriers.length);
     for (let i = 0; i < couriers.length; i++) {
-      console.log(couriers[i].adr, account);
       if (couriers[i].adr === account) {
         return true;
       }
