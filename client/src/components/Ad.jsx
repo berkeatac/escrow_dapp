@@ -64,7 +64,10 @@ const Ad = ({
         ) : null}
       </CardActions>
       <CardActions>
-        {item.purchased && item.buyer === account && !item.verified ? (
+        {item.purchased &&
+        item.buyer === account &&
+        !item.verified &&
+        item.transit ? (
           <>
             <Button size="small" onClick={() => verifyPurchase(item)}>
               Verify Escrow
