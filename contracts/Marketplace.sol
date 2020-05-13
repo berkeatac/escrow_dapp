@@ -66,7 +66,7 @@ contract Marketplace {
     {
         for (uint256 i = 0; i < courierCount; i++) {
             Courier memory _courier = couriers[i];
-            if (_courier.add == courierAddr) {
+            if (_courier.adr == courierAddr) {
                 return i;
             }
         }
