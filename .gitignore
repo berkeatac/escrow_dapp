@@ -43,3 +43,6 @@ yarn.lock
 package-lock.json
 
 # End of https://www.gitignore.io/api/react,soliditytruffle
+
+# contract abis
+client/src/contracts

@@ -115,8 +115,8 @@ contract Marketplace {
             _item.purchased && !_item.verified,
             "purchase must be in verification phase"
         );
-        require(msg.sender == _item.buyer);
-        require(_item.purchased && !_item.verified);
+        require(msg.sender == _item.buyer, "only buyer can cancel purchase");
+        require(_item.purchased && !_item.verified, "item must be purchased");
         _item.purchased = false;
         address payable target = _item.buyer;
         target.transfer(_item.price);
@@ -126,8 +126,8 @@ contract Marketplace {
 
     function deleteItem(uint256 _id) public {
         Item memory _item = items[_id];
-        require(msg.sender == _item.owner);
-        require(!_item.purchased);
+        require(msg.sender == _item.owner, "only owner can delete the item");
+        require(!_item.purchased, "item does not have to be purchased");
         delete items[_id];
     }
 }
