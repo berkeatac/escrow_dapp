@@ -35,16 +35,18 @@ contract Marketplace {
     /*
      * Events
      */
-    event ItemCreated(
-        uint256 id,
-        string name,
-        string description,
-        uint256 price,
-        address payable owner,
-        address payable buyer,
-        bool purchased,
-        bool verified
-    );
+    // event ItemCreated(
+    //     uint256 id,
+    //     string name,
+    //     string description,
+    //     uint256 price,
+    //     address payable owner,
+    //     address payable buyer,
+    //     address payable courier,
+    //     bool purchased,
+    //     bool verified,
+    //     bool transit
+    // );
 
     event ItemPurchased();
 
@@ -56,6 +58,18 @@ contract Marketplace {
         // require() is not already a courier
         couriers[courierCount] = Courier(courierCount, msg.sender, 0);
         courierCount++;
+    }
+
+    function getCourierIdByAddress(address payable courierAddr)
+        private
+        returns (uint256)
+    {
+        for (uint256 i = 0; i < courierCount; i++) {
+            Courier memory _courier = couriers[i];
+            if (_courier.add == courierAddr) {
+                return i;
+            }
+        }
     }
 
     function getCouriers() public returns (Courier[] memory) {
@@ -92,21 +106,24 @@ contract Marketplace {
             address(0),
             address(0),
             false,
-            false
-        );
-        itemCount++;
-        emit ItemCreated(
-            itemCount,
-            _name,
-            _description,
-            _price,
-            0,
-            msg.sender,
-            address(0),
-            address(0),
             false,
             false
         );
+        itemCount++;
+        // emit ItemCreated(
+        //     itemCount,
+        //     _name,
+        //     _description,
+        //     _price,
+        //     0,
+        //     msg.sender,
+        //     address(0),
+        //     address(0),
+        //     address(0),
+        //     false,
+        //     false,
+        //     false
+        // );
     }
 
     function purchaseItem(uint256 _id) public payable {
@@ -128,9 +145,9 @@ contract Marketplace {
         items[_id] = _item;
     }
 
-    function setPurchaseFee(uint256 _id, uint256 percentage) {
+    function setPurchaseFee(uint256 _id, uint256 percentage) public {
         Item memory _item = items[_id];
-        _item.fee =  _item.price * percentage / 100
+        _item.fee = (_item.price * percentage) / 100;
         _item.courier = msg.sender;
         _item.transit = true;
         items[_id] = _item;
@@ -144,6 +161,10 @@ contract Marketplace {
             "item must be purchased but not verified"
         );
         require(_item.price >= 0, "item price must be unsigned integer");
+        uint256 cid = getCourierIdByAddress(_item.courier);
+        Courier memory _itemCourier = couriers[cid];
+        _itemCourier.reputation++;
+        couriers[cid] = _itemCourier;
         _item.purchased = true;
         _item.verified = true;
         _item.transit = false;
@@ -163,7 +184,12 @@ contract Marketplace {
         require(_item.purchased && !_item.verified, "item must be purchased");
         _item.purchased = false;
         address payable target = _item.buyer;
+        uint256 cid = getCourierIdByAddress(_item.courier);
+        Courier memory _itemCourier = couriers[cid];
+        _itemCourier.reputation--;
+        couriers[cid] = _itemCourier;
         target.transfer(_item.price);
+        target.transfer(_item.fee);
         _item.buyer = address(0);
         items[_id] = _item;
     }
