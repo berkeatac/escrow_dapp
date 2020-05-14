@@ -5,10 +5,21 @@ import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
+
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableContainer from "@material-ui/core/TableContainer";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+
 import styled from "styled-components";
 
 const StyledCard = styled(Card)`
-  width: 40vw;
+  width: 90%;
+  text-align: left;
 `;
 
 const Ad = ({
@@ -20,7 +31,7 @@ const Ad = ({
   couriers,
   setPurchaseFee,
 }) => {
-  const [fee, setFee] = useState(0);
+  const [fee, setFee] = useState(2);
   const isCourier = () => {
     for (let i = 0; i < couriers.length; i++) {
       if (couriers[i].adr === account) {
@@ -31,65 +42,95 @@ const Ad = ({
   };
 
   return (
-    <StyledCard>
+    <StyledCard
+      style={{
+        backgroundColor: `${
+          item.verified && item.buyer === account ? "#b6e48b" : "white"
+        }`,
+      }}
+    >
       <CardContent>
-        <Typography variant="h5" component="h2">
-          {item.name}
-        </Typography>
-        <Typography variant="body2" component="p">
-          {item.description}
-        </Typography>
-        <Typography variant="body2" component="p">
-          {`Seller: ${item.owner}`}
-        </Typography>
-        <Typography variant="body2" component="p">
-          {`${item.price / 10 ** 18} ETH`}
-        </Typography>
-        {item.verified && item.buyer === account ? (
-          <Typography variant="body2" component="p">
-            You bought and verified the purchase of this item
-          </Typography>
-        ) : null}
-        {item.transit && item.purchased && !item.verified ? (
-          <Typography variant="overline" component="p">
-            {`IN TRANSIT BY ${item.courier}`}
-          </Typography>
-        ) : null}
+        <TableContainer component={Card}>
+          <Table size="medium" aria-label="a dense table">
+            <TableBody>
+              <TableRow key={item.name}>
+                <TableCell scope="row">
+                  <b>Title</b>
+                </TableCell>
+                <TableCell>{item.name}</TableCell>
+              </TableRow>
+              <TableRow key={item.description}>
+                <TableCell scope="row">
+                  <b>Description</b>
+                </TableCell>
+                <TableCell>{item.description}</TableCell>
+              </TableRow>
+              <TableRow key={item.seller}>
+                <TableCell scope="row">
+                  <b>Seller</b>
+                </TableCell>
+                <TableCell>{item.owner}</TableCell>
+              </TableRow>
+              <TableRow key={item.price}>
+                <TableCell scope="row">
+                  <b>Price</b>
+                </TableCell>
+                <TableCell>{`${item.price / 10 ** 18} ETH`}</TableCell>
+              </TableRow>
+              {item.transit && item.purchased && !item.verified ? (
+                <TableRow key={item.courier}>
+                  <TableCell scope="row">
+                    <b>In Transit By</b>
+                  </TableCell>
+                  <TableCell>{item.courier}</TableCell>
+                </TableRow>
+              ) : null}
+              {item.purchased && item.verified ? (
+                <TableRow key={item.courier}>
+                  <TableCell scope="row">
+                    <b>Delivered By</b>
+                  </TableCell>
+                  <TableCell>{`${item.courier}`}</TableCell>
+                </TableRow>
+              ) : null}
+            </TableBody>
+          </Table>
+        </TableContainer>
       </CardContent>
-      <CardActions>
-        {!item.purchased && item.owner !== account && !isCourier() ? (
+
+      {!item.purchased && item.owner !== account && !isCourier() ? (
+        <CardActions>
           <Button size="small" onClick={() => purchaseItem(item)}>
             Send Escrow
           </Button>
-        ) : null}
-      </CardActions>
-      <CardActions>
-        {item.purchased && item.buyer === account && !item.verified ? (
-          <>
-            <Button size="small" onClick={() => verifyPurchase(item)}>
-              Verify Escrow
-            </Button>
-            <Button size="small" onClick={() => cancelPurchase(item)}>
-              Cancel Escrow
-            </Button>
-          </>
-        ) : null}
-      </CardActions>
-      <CardActions>
-        {isCourier() && !item.transit && item.purchased && !item.verified ? (
-          <>
-            <TextField
-              type="number"
-              inputProps={{ min: "0", max: "10", step: "1", maxLength: "2" }}
-              value={fee}
-              onChange={(e) => setFee(e.target.value)}
-            ></TextField>
-            <Button size="small" onClick={() => setPurchaseFee(item.id, fee)}>
-              % Deliver
-            </Button>
-          </>
-        ) : null}
-      </CardActions>
+        </CardActions>
+      ) : null}
+      {item.purchased &&
+      item.buyer === account &&
+      !item.verified &&
+      item.transit ? (
+        <CardActions>
+          <Button size="small" onClick={() => verifyPurchase(item)}>
+            Verify Escrow
+          </Button>
+          <Button size="small" onClick={() => cancelPurchase(item)}>
+            Cancel Escrow
+          </Button>
+        </CardActions>
+      ) : null}
+
+      {isCourier() && !item.transit && item.purchased && !item.verified ? (
+        <CardActions>
+          <Select value={fee} onChange={(e) => setFee(e.target.value)}>
+            <MenuItem value={2}>2</MenuItem>
+            <MenuItem value={5}>5</MenuItem>
+            <MenuItem value={10}>10</MenuItem>
+          </Select>
+          <Button size="small" onClick={() => setPurchaseFee(item.id, fee)}>
+            % Deliver
+          </Button>
+        </CardActions>
+      ) : null}
     </StyledCard>
   );
 };
