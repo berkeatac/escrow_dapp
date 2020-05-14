@@ -181,7 +181,7 @@ class App extends Component {
           becomeCourier={this.becomeCourier}
           couriers={this.state.couriers}
         />
-        <Grid container>
+        <Grid container style={{ height: "100%" }}>
           <Grid item xs={5}>
             <PostAd createItem={this.createItem}></PostAd>
             <CouriersList couriers={this.state.couriers}></CouriersList>
