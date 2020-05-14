@@ -7,6 +7,8 @@ import PostAd from "./components/PostAd";
 import Ad from "./components/Ad";
 import AdList from "./components/AdList";
 import NavBar from "./components/NavBar";
+import CouriersList from "./components/CouriersList";
+import Grid from "@material-ui/core/Grid";
 
 import "./App.css";
 
@@ -169,18 +171,23 @@ class App extends Component {
           becomeCourier={this.becomeCourier}
           couriers={this.state.couriers}
         />
-        <Container>
-          <PostAd createItem={this.createItem}></PostAd>
-          <AdList
-            items={this.state.items}
-            purchaseItem={this.purchaseItem}
-            verifyPurchase={this.verifyPurchase}
-            cancelPurchase={this.cancelPurchase}
-            account={this.state.accounts[0]}
-            couriers={this.state.couriers}
-            setPurchaseFee={this.setPurchaseFee}
-          ></AdList>
-        </Container>
+        <Grid container>
+          <Grid item xs={5}>
+            <PostAd createItem={this.createItem}></PostAd>
+            <CouriersList couriers={this.state.couriers}></CouriersList>
+          </Grid>
+          <Grid item xs={7}>
+            <AdList
+              items={this.state.items}
+              purchaseItem={this.purchaseItem}
+              verifyPurchase={this.verifyPurchase}
+              cancelPurchase={this.cancelPurchase}
+              account={this.state.accounts[0]}
+              couriers={this.state.couriers}
+              setPurchaseFee={this.setPurchaseFee}
+            ></AdList>
+          </Grid>
+        </Grid>
       </AppDiv>
     );
   }
