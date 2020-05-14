@@ -4,8 +4,8 @@ pragma experimental ABIEncoderV2;
 
 contract Marketplace {
     string public name;
-    uint256 itemCount = 0;
-    uint256 courierCount = 0;
+    uint256 public itemCount = 0;
+    uint256 public courierCount = 0;
 
     mapping(uint256 => Item) public items;
     mapping(uint256 => Courier) public couriers;
@@ -35,23 +35,28 @@ contract Marketplace {
     /*
      * Events
      */
-    // event ItemCreated(
-    //     uint256 id,
-    //     string name,
-    //     string description,
-    //     uint256 price,
-    //     address payable owner,
-    //     address payable buyer,
-    //     address payable courier,
-    //     bool purchased,
-    //     bool verified,
-    //     bool transit
-    // );
+    event ItemCreated(
+        uint256 id,
+        string name,
+        string description,
+        uint256 price,
+        uint256 fee,
+        address payable owner,
+        address payable buyer,
+        address payable courier,
+        bool purchased,
+        bool verified,
+        bool transit
+    );
 
     event ItemPurchased();
 
     constructor() public {
         name = "Marketplace";
+    }
+
+    function getItemCount() public returns (uint256) {
+        return itemCount;
     }
 
     function becomeCourier() public {
@@ -110,20 +115,19 @@ contract Marketplace {
             false
         );
         itemCount++;
-        // emit ItemCreated(
-        //     itemCount,
-        //     _name,
-        //     _description,
-        //     _price,
-        //     0,
-        //     msg.sender,
-        //     address(0),
-        //     address(0),
-        //     address(0),
-        //     false,
-        //     false,
-        //     false
-        // );
+        emit ItemCreated(
+            itemCount,
+            _name,
+            _description,
+            _price,
+            0,
+            msg.sender,
+            address(0),
+            address(0),
+            false,
+            false,
+            false
+        );
     }
 
     function purchaseItem(uint256 _id) public payable {
