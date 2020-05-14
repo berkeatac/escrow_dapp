@@ -20,21 +20,19 @@ const Container = styled(Paper)`
 
 const CouriersList = ({ couriers }) => {
   return (
-    <TableContainer component={Container}>
+    <TableContainer component={Container} style={{ width: "auto" }}>
       <Table size="small" aria-label="a dense table">
         <TableHead>
           <TableRow>
             <TableCell>Courier Address</TableCell>
-            <TableCell align="right">Reputation</TableCell>
+            <TableCell>Reputation</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {couriers.map((courier) => (
             <TableRow key={courier.adr}>
-              <TableCell component="th" scope="row">
-                {courier.adr}
-              </TableCell>
-              <TableCell align="right">{courier.reputation}</TableCell>
+              <TableCell scope="row">{courier.adr}</TableCell>
+              <TableCell>{courier.reputation}</TableCell>
             </TableRow>
           ))}
         </TableBody>
