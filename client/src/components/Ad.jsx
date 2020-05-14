@@ -30,6 +30,7 @@ const Ad = ({
   cancelPurchase,
   couriers,
   setPurchaseFee,
+  deleteItem,
 }) => {
   const [fee, setFee] = useState(2);
   const isCourier = () => {
@@ -131,6 +132,14 @@ const Ad = ({
           </Button>
         </CardActions>
       ) : null}
+
+      {/* {!item.purchased && item.owner === account ? (
+        <CardActions>
+          <Button size="small" onClick={() => deleteItem(item.id)}>
+            Delete Item
+          </Button>
+        </CardActions>
+      ) : null} */}
     </StyledCard>
   );
 };

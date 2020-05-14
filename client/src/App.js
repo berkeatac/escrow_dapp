@@ -160,6 +160,16 @@ class App extends Component {
     }
   };
 
+  deleteItem = async (itemId) => {
+    const { accounts, contract } = this.state;
+    const resp = await contract.methods
+      .deleteItem(itemId)
+      .send({ from: accounts[0] });
+    if (resp) {
+      this.getItems();
+    }
+  };
+
   render() {
     if (!this.state.web3) {
       return <div>Loading Web3, accounts, and contract...</div>;
@@ -185,6 +195,7 @@ class App extends Component {
               account={this.state.accounts[0]}
               couriers={this.state.couriers}
               setPurchaseFee={this.setPurchaseFee}
+              deleteItem={this.deleteItem}
             ></AdList>
           </Grid>
         </Grid>
