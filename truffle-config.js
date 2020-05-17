@@ -14,5 +14,6 @@ module.exports = {
       network_id: "*" // Match any network id
     },
   },
+	plugins: ["solidity-coverage"],
   contracts_build_directory: "./client/src/contracts"
 };
