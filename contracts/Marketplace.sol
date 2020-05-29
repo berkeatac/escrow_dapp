@@ -179,11 +179,6 @@ contract Marketplace {
 
     function cancelPurchase(uint256 _id) public payable {
         Item memory _item = items[_id];
-        require(msg.sender == _item.buyer, "msg.sender must be buyer");
-        require(
-            _item.purchased && !_item.verified,
-            "purchase must be in verification phase"
-        );
         require(msg.sender == _item.buyer, "only buyer can cancel purchase");
         require(_item.purchased && !_item.verified, "item must be purchased");
         _item.purchased = false;
@@ -193,7 +188,6 @@ contract Marketplace {
         _itemCourier.reputation--;
         couriers[cid] = _itemCourier;
         target.transfer(_item.price);
-        target.transfer(_item.fee);
         _item.buyer = address(0);
         _item.transit = false;
         items[_id] = _item;
