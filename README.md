@@ -6,13 +6,8 @@ Compile smart contract and deploy it to a network
 
 `truffle migrate --reset --compile-all`
 `cd client`
+`npm install`
 
 Start client application
-
-## yarn
-
-`yarn run start`
-
-## npm
 
 `npm run start`
