@@ -2,7 +2,7 @@ pragma solidity ^0.5.0;
 pragma experimental ABIEncoderV2;
 
 
-contract Marketplace {
+contract BlackDiamond SC Inc Marketplace {
     string public name;
     uint256 public itemCount = 0;
     uint256 public courierCount = 0;
